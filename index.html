@@ -35,7 +35,7 @@
   <article class="pan dark" style="--bg:#2a1a12;--fg:#f3e8d8;--ac:#e0a35f" data-n="03">
    <div class="big" aria-hidden="true">PULL</div>
    <div class="obj"><img src="img/espresso.webp" alt="Red lever espresso machine pulling a shot into a white cup" width="862" height="988" loading="lazy"></div>
-   <div class="copy"><span class="num">03</span><h2>Named for the espresso machine.</h2><p>1903 marks the year Desiderio Pavoni of Milan perfected the espresso machine. Not the building. The shot.</p></div>
+   <div class="copy"><span class="num">03</span><h2>Named for the espresso machine.</h2><p>1903 marks the year Desiderio Pavoni of Milan perfected the espresso machine. That is the story on the sign inside the cafe.</p></div>
   </article>
   <article class="pan dark" style="--bg:#c0643f;--fg:#fff4e8;--ac:#2a1a12" data-n="04">
    <div class="big" aria-hidden="true">POUR</div>
@@ -83,5 +83,5 @@
 <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
 <script defer src="js/story.js"></script>
-<script>addEventListener("load",()=>{const go=()=>import("./js/beans.js");"requestIdleCallback" in window?requestIdleCallback(go,{timeout:2500}):setTimeout(go,1200)})</script>
+<script>addEventListener("load",()=>{let d=0;const go=()=>{if(d)return;d=1;import("./js/beans.js")};["scroll","pointerdown","keydown","wheel","touchstart"].forEach(e=>addEventListener(e,go,{once:true,passive:true}));setTimeout(()=>"requestIdleCallback" in window?requestIdleCallback(go):go(),matchMedia("(pointer:coarse)").matches?6000:2500)})</script>
 </body></html>

@@ -22,7 +22,7 @@ a{color:inherit}
 .copy p{margin:0 0 18px;font-size:15px;line-height:1.5;opacity:.85}
 .copy .pill{background:var(--ac);color:var(--bg)}
 .dark .copy .pill{color:#fff4e8}.pan[data-n="04"] .copy .pill,.pan[data-n="05"] .copy .pill{color:#2a1a12}
-#beans{position:absolute;inset:0;width:100%;height:100%;z-index:20;pointer-events:none}
+#beans{position:absolute;inset:0;width:100%;height:100%;z-index:20;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,transparent 0,transparent 30%,#000 40%);mask-image:linear-gradient(90deg,transparent 0,transparent 30%,#000 40%)}
 .hud{position:absolute;right:clamp(16px,3vw,40px);top:50%;transform:translateY(-50%);z-index:30;display:flex;flex-direction:column;align-items:center;gap:14px;color:var(--hc,#1f140d);font-size:12px;font-weight:700}
 .dots{display:flex;flex-direction:column;gap:8px}.dots i{width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.3;transition:.3s}.dots i.on{opacity:1;transform:scale(1.4)}
 .hint{writing-mode:vertical-rl;letter-spacing:.2em;text-transform:uppercase;opacity:.6}
@@ -42,9 +42,10 @@ a{color:inherit}
 .ringing{animation:ring .5s}@keyframes ring{25%{transform:rotate(-12deg)}75%{transform:rotate(12deg)}}
 @media (max-width:760px){
  .nav{display:none}.hdr .pill{margin-left:auto}
- .big{top:30%;font-size:27vw}
- .obj{top:45%;width:min(72vw,46svh)}
- .copy{bottom:84px;right:16px;width:auto;padding-right:56px}
+ .big{top:23%;font-size:25vw}
+ .obj{top:44%;width:min(56vw,32svh)}
+ #beans{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 52%,transparent 64%);mask-image:linear-gradient(180deg,#000 0,#000 52%,transparent 64%)}
+ .copy{left:0;right:0;bottom:0;padding:44px 72px 76px 16px;background:linear-gradient(180deg,transparent,var(--bg) 38px);right:16px;width:auto;padding-right:56px}
  .copy p{font-size:14px;margin-bottom:12px}
  .hud{top:auto;bottom:auto;top:84px;transform:none;flex-direction:row}.dots{flex-direction:row}.hint{display:none}
  .board,.visit,.facts{grid-template-columns:1fr}.facts{gap:28px}
@@ -55,3 +56,4 @@ a{color:inherit}
 .static .pan{position:relative;clip-path:none!important;height:100svh;min-height:560px;overflow:hidden}
 .static #beans,.static .hud{display:none}
 .js:not(.fonts) .big{visibility:hidden}
+@media (max-width:760px) and (max-height:700px){.big{top:21%;font-size:22vw}.obj{top:38%;width:min(48vw,24svh)}.copy p{font-size:13px;margin-bottom:10px}.copy .num{width:32px;height:32px;margin-bottom:6px.hud{display:none}}
