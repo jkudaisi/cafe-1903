@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /cafe-1903/classic/
+Sitemap: https://jkudaisi.github.io/cafe-1903/sitemap.xml
