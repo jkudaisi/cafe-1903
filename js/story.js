@@ -19,7 +19,8 @@ if(!TOUCH&&!RM&&window.Lenis){lenis=new Lenis({lerp:.1,smoothWheel:true});lenis.
 document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(!t)return;e.preventDefault();const y=t.getBoundingClientRect().top+scrollY;lenis?lenis.scrollTo(y,{duration:1.4}):scrollTo({top:y,behavior:RM?'auto':'smooth'})}));
 const pans=[...document.querySelectorAll('.pan')],N=pans.length;
 const hdr=document.querySelector('.hdr'),hud=document.querySelector('.hud'),dots=[...document.querySelectorAll('.dots i')],cnt=document.querySelector('.cnt b');
-const setStep=i=>{dots.forEach((d,k)=>d.classList.toggle('on',k===i));if(cnt)cnt.textContent='0'+(i+1);const fg=getComputedStyle(pans[i]).getPropertyValue('--fg');hdr.style.setProperty('--hc',fg);hud.style.setProperty('--hc',fg)};
+const FG=pans.map(p=>getComputedStyle(p).getPropertyValue('--fg'));
+const setStep=i=>{dots.forEach((d,k)=>d.classList.toggle('on',k===i));if(cnt)cnt.textContent='0'+(i+1);const fg=FG[i];hdr.style.setProperty('--hc',fg);hud.style.setProperty('--hc',fg)};
 setStep(0);
 if(root.classList.contains('static'))return;
 const tl=gsap.timeline({defaults:{ease:'none'}});
@@ -34,7 +35,7 @@ pans.forEach((p,i)=>{
   tl.to(img,{yPercent:70,scale:.7,rotation:i%2?-18:18,duration:.45,ease:'power2.in'},t)
     .to(big,{scale:.55,autoAlpha:.2,duration:.45},t)
     .to(copy,{y:-40,autoAlpha:0,duration:.25},t)
-    .fromTo(n,{clipPath:'inset(100% 0% 0% 0%)'},{clipPath:'inset(0% 0% 0% 0%)',duration:.45,ease:'power2.inOut'},t)
+    .fromTo(n,TOUCH?{y:0,yPercent:100}:{clipPath:'inset(100% 0% 0% 0%)'},TOUCH?{y:0,yPercent:0,duration:.45,ease:'power2.inOut',force3D:true}:{clipPath:'inset(0% 0% 0% 0%)',duration:.45,ease:'power2.inOut'},t)
     .fromTo(ni,{yPercent:-90,scale:1.25,rotation:i%2?14:-14},{yPercent:0,scale:1,rotation:i%2?4:-4,duration:.45,ease:'power2.out',immediateRender:false},t)
     .fromTo(nb,{scale:1.35},{scale:1,duration:.45,immediateRender:false},t)
     .fromTo(nc,{y:40,autoAlpha:0},{y:0,autoAlpha:1,duration:.25,immediateRender:false},t+.25);
@@ -42,8 +43,9 @@ pans.forEach((p,i)=>{
 });
 gsap.set(pans.slice(1).map(p=>p.querySelector('.copy')),{autoAlpha:0});
 let last=-1;
-ScrollTrigger.create({trigger:'#story',start:'top top',end:'bottom bottom',scrub:TOUCH?true:.6,animation:tl,
- onUpdate:s=>{S.progress=s.progress;const i=Math.min(N-1,Math.round(s.progress*(N-1)));if(i!==last){last=i;setStep(i)}},
+const dec=()=>document.querySelectorAll('.obj img').forEach(i=>{i.loading='eager';i.decode&&i.decode().catch(()=>{})});addEventListener('load',()=>('requestIdleCallback' in window?requestIdleCallback(dec,{timeout:2000}):setTimeout(dec,800)));
+ScrollTrigger.create({trigger:'#story',start:'top top',end:'bottom bottom',scrub:TOUCH?.5:.6,invalidateOnRefresh:true,onToggle:s=>root.classList.toggle('pinned',s.isActive),animation:tl,
+ onUpdate:s=>{S.progress=s.progress;S.scrollT=performance.now();const i=Math.min(N-1,Math.round(s.progress*(N-1)));if(i!==last){last=i;setStep(i)}},
  onLeave:()=>{hdr.style.setProperty('--hc','#1f140d')},onEnterBack:()=>{last=-1}});
 // mouse parallax on desktop, rAF-throttled
 if(!TOUCH){let mx=0,my=0,tx=0,ty=0,raf=0;addEventListener('pointermove',e=>{tx=(e.clientX/innerWidth-.5)*30;ty=(e.clientY/innerHeight-.5)*20;if(!raf)raf=requestAnimationFrame(loop)},{passive:true});
